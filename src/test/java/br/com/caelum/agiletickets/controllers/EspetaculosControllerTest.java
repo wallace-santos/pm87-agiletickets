@@ -118,5 +118,22 @@ public class EspetaculosControllerTest {
 
 		assertThat(sessao.getIngressosDisponiveis(), is(2));
 	}
+	
+	@Test
+	public void deveReservarSeIngressoSuficiente() throws Exception {
+		Espetaculo espetaculo = new Espetaculo();
+		espetaculo.setTipo(TipoDeEspetaculo.TEATRO);
+
+		Sessao sessao = new Sessao();
+		sessao.setPreco(new BigDecimal("10.00"));
+		sessao.setTotalIngressos(1);
+		sessao.setEspetaculo(espetaculo);
+
+		when(agenda.sessao(1234l)).thenReturn(sessao);
+
+		controller.reserva(1234l, 1);
+
+		assertThat(sessao.getIngressosDisponiveis(), is(0));
+	}	
 
 }
